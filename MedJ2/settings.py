@@ -67,7 +67,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'bg'
+LANGUAGE_CODE = 'BG'
 TIME_ZONE = 'Europe/Sofia'
 USE_I18N = True
 USE_TZ = True
@@ -76,8 +76,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    os.path.join(BASE_DIR, 'MedJ/static'),
 ]
 
 MEDIA_URL = '/media/'
@@ -87,11 +88,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 load_dotenv()
-
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
-
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 LOGIN_REDIRECT_URL = 'dashboard'

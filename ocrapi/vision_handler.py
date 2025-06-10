@@ -1,7 +1,7 @@
+import io
 import os
 from google.cloud import vision
-import
-import re
+from google.oauth2 import service_account
 
 def extract_text_from_image(image_path):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
