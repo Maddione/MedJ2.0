@@ -16,4 +16,7 @@ class MedicalDocumentForm(forms.ModelForm):
         fields = ['event', 'file', 'tags']
         widgets = {
             'tags': forms.CheckboxSelectMultiple(),
+
         }
+class OCRUploadForm(forms.Form):
+    file = forms.FileField(label="Качи изображение или PDF")
