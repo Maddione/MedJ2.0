@@ -1,15 +1,17 @@
 import os
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, MedicalDocumentForm
-from .models import MedicalDocument
-from .forms import OCRUploadForm
-from ocrapi.vision_handler import extract_text_from_image, extract_medical_fields_from_text
-from .models import BloodTestResult
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
 from datetime import datetime
+
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import CustomUserCreationForm, MedicalDocumentForm, OCRUploadForm
+from .models import BloodTestResult, MedicalDocument
+from ocrapi.vision_handler import extract_medical_fields_from_text, extract_text_from_image
+
 
 def landing_page(request):
     return render(request, "landingpage.html")
@@ -69,37 +71,23 @@ def dashboard(request):
 
 @login_required
 def upload(request):
-    extracted_data = None  # празно по начало
+    extracted_text = None
+    extracted_fields = None
     if request.method == "POST" and request.FILES.get("document"):
         file = request.FILES["document"]
 
-        # Временно запазване
         temp_path = os.path.join(settings.MEDIA_ROOT, "temp", file.name)
         os.makedirs(os.path.dirname(temp_path), exist_ok=True)
         with open(temp_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-
         extracted_text = extract_text_from_image(temp_path)
+        extracted_fields = extract_medical_fields_from_text(extracted_text)
 
-
-        extracted_data = extract_medical_fields_from_text(extracted_text)
-
-        if extracted_data:
-            BloodTestResult.objects.create(
-                user=request.user,
-                tsh=extracted_data.get("TSH"),
-                glucose=extracted_data.get("Глюкоза"),
-                t4=extracted_data.get("Т4"),
-                hba1c=extracted_data.get("HbA1c"),
-                date=datetime.strptime(extracted_data.get("Дата"), "%d.%m.%Y") if extracted_data.get("Дата") else None
-            )
-
-        # Премахване на временния файл
         os.remove(temp_path)
 
-    return render(request, "upload.html", {"extracted": extracted_data})
+    return render(request, "upload.html", {"extracted_text": extracted_text, "extracted_fields": extracted_fields})
 
 @login_required
 def upload_success(request):
@@ -110,27 +98,16 @@ def ocr_and_extract_view(request):
     if request.method == "POST" and request.FILES.get("file"):
         file = request.FILES["file"]
 
-        # 1. Запазване временно
         temp_path = os.path.join(settings.MEDIA_ROOT, "temp", file.name)
         os.makedirs(os.path.dirname(temp_path), exist_ok=True)
         with open(temp_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-
         extracted_text = extract_text_from_image(temp_path)
         extracted_data = extract_medical_fields_from_text(extracted_text)
 
-        if extracted_data:
-            result = BloodTestResult.objects.create(
-                user=request.user,
-                tsh=extracted_data.get("TSH"),
-                glucose=extracted_data.get("Глюкоза"),
-                t4=extracted_data.get("Т4"),
-                hba1c=extracted_data.get("HbA1c"),
-                date=datetime.strptime(extracted_data.get("Дата"), "%d.%m.%Y") if extracted_data.get("Дата") else None
-            )
-            result.save()
+        os.remove(temp_path)
 
         return JsonResponse({
             "extracted": extracted_data,
