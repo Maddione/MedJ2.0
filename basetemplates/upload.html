@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Качване на документ • MedJ{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 bg-light p-4 rounded" style="background-color: #fdfee9;">
+    <h3 class="mb-3" style="color: #0a4e75;">Качете медицински документ</h3>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        <input type="file" name="document" class="form-control" required>
+      </div>
+      <button type="submit" class="btn w-100" style="background-color: #43b8cf; color: white;">Качи</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
