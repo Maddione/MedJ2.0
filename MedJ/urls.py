@@ -11,7 +11,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('register/', views.register, name='register'),
     path('upload/', views.upload, name='upload'),
-    path('upload/success/', views.upload_success, name='upload_success'),
     path("i18n/", include("django.conf.urls.i18n")),
 
 ]
