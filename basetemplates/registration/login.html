@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Вход • MedJ{% endblock %}
+{% block title %}{% trans 'Вход' %} • MedJ{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
   <div class="p-5 rounded" style="background-color: #fdfee9; box-shadow: 0 0 15px rgba(0,0,0,0.1); max-width: 450px; width: 100%;">
     <div class="text-center mb-4 rounded" style="background-color: #43b8cf; padding: 1rem;">
-      <h2 class="text-white m-0">Добре дошли</h2>
+       <h2 class="text-white m-0">{% trans 'Добре дошли' %}</h2>
     </div>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="btn w-100 text-white fw-bold" style="background-color: #43b8cf;">Вход</button>
+      <button type="submit" class="btn w-100 text-white fw-bold" style="background-color: #43b8cf;">{% trans 'Вход' %}</button>
     </form>
     <p class="text-center mt-3">
-      Нямаш акаунт? <a href="{% url 'register' %}" style="color: #0a4e75;">Регистрирай се</a>
+       {% trans 'Нямаш акаунт?' %} <a href="{% url 'register' %}" style="color: #0a4e75;">{% trans 'Регистрирай се' %}</a>
     </p>
   </div>
 </div>
