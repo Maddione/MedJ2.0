@@ -1,152 +1,100 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 04:07+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
 
-#: .\basetemplates\base.html:78 .\basetemplates\dashboard.html:2
 msgid "Табло"
-msgstr ""
+msgstr "Dashboard"
 
-#: .\basetemplates\base.html:79 .\basetemplates\upload.html:31
 msgid "Качи"
-msgstr ""
+msgstr "Upload"
 
-#: .\basetemplates\base.html:80
 msgid "Изход"
-msgstr ""
+msgstr "Logout"
 
-#: .\basetemplates\base.html:82 .\basetemplates\registration\login.html:2
-#: .\basetemplates\registration\login.html:12
 msgid "Вход"
-msgstr ""
+msgstr "Login"
 
-#: .\basetemplates\base.html:83 .\basetemplates\registration\register.html:4
-#: .\basetemplates\registration\register.html:8
 msgid "Регистрация"
-msgstr ""
+msgstr "Register"
 
-#: .\basetemplates\dashboard.html:4
-msgid "Вашето табло"
-msgstr ""
-
-#: .\basetemplates\dashboard.html:5
-msgid "Тук ще виждате последно качените документи, анализи и известия."
-msgstr ""
-
-#: .\basetemplates\landingpage.html:2
-msgid "Начало"
-msgstr ""
-
-#: .\basetemplates\profile.html:2
-msgid "Профил"
-msgstr ""
-
-#: .\basetemplates\profile.html:6
-msgid "Вашият профил"
-msgstr ""
-
-#: .\basetemplates\profile.html:8
-msgid "Потребител"
-msgstr ""
-
-#: .\basetemplates\profile.html:9
-msgid "Имейл"
-msgstr ""
-
-#: .\basetemplates\profile.html:10
-msgid "Дата на регистрация"
-msgstr ""
-
-#: .\basetemplates\profile.html:12
-msgid "Назад към таблото"
-msgstr ""
-
-#: .\basetemplates\registration\login.html:7
-msgid "Добре дошли"
-msgstr ""
-
-#: .\basetemplates\registration\login.html:15
-msgid "Нямаш акаунт?"
-msgstr ""
-
-#: .\basetemplates\registration\login.html:15
 msgid "Регистрирай се"
-msgstr ""
+msgstr "Sign up"
 
-#: .\basetemplates\upload.html:2
+msgid "Нямаш акаунт?"
+msgstr "Don't have an account?"
+
 msgid "Качване на документ"
-msgstr ""
+msgstr "Upload Document"
 
-#: .\basetemplates\upload.html:7
 msgid "Качете медицински документ"
-msgstr ""
+msgstr "Upload a medical document"
 
-#: .\basetemplates\upload.html:15
 msgid "Вид документ"
-msgstr ""
+msgstr "Document type"
 
-#: .\basetemplates\upload.html:17
 msgid "кръвни изследвания"
-msgstr ""
+msgstr "blood tests"
 
-#: .\basetemplates\upload.html:18
 msgid "амбулаторен лист"
-msgstr ""
+msgstr "outpatient record"
 
-#: .\basetemplates\upload.html:19
 msgid "епикриза"
-msgstr ""
+msgstr "epicrisis"
 
-#: .\basetemplates\upload.html:20
 msgid "направление"
-msgstr ""
+msgstr "referral"
 
-#: .\basetemplates\upload.html:21
 msgid "рецепта"
-msgstr ""
+msgstr "prescription"
 
-#: .\basetemplates\upload.html:25
 msgid "Тип файл"
-msgstr ""
+msgstr "File type"
 
-#: .\basetemplates\upload.html:27
 msgid "изображение"
-msgstr ""
+msgstr "image"
 
-#: .\basetemplates\upload.html:39
 msgid "Извлечен текст:"
-msgstr ""
+msgstr "Extracted text:"
 
-#: .\basetemplates\upload.html:50
 msgid "Разпознати стойности:"
-msgstr ""
+msgstr "Recognized values:"
 
-#: .\basetemplates\upload.html:54
 msgid "Име"
-msgstr ""
+msgstr "Name"
 
-#: .\basetemplates\upload.html:55
 msgid "Стойност"
-msgstr ""
+msgstr "Value"
 
-#: .\basetemplates\upload_success.html:2
+msgid "Вашето табло"
+msgstr "Your dashboard"
+
+msgid "Тук ще виждате последно качените документи, анализи и известия."
+msgstr "Here you'll see recently uploaded documents, analyses and notifications."
+
+msgid "Добре дошли"
+msgstr "Welcome"
+
+msgid "Вашият профил"
+msgstr "Your profile"
+
+msgid "Потребител"
+msgstr "User"
+
+msgid "Имейл"
+msgstr "Email"
+
+msgid "Дата на регистрация"
+msgstr "Registration date"
+
+msgid "Назад към таблото"
+msgstr "Back to dashboard"
+
 msgid "Успех"
-msgstr ""
+msgstr "Success"
 
-#: .\basetemplates\upload_success.html:5
 msgid "Успешно качихте документа!"
-msgstr ""
+msgstr "Document uploaded successfully!"
+
+msgid "Начало"
+msgstr "Home"
