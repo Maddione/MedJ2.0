@@ -5,13 +5,25 @@ from google.cloud import vision
 from dotenv import load_dotenv
 from google.oauth2 import service_account
 
-# Зареждаме ключа от .env
 load_dotenv()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-# Създаваме клиент
 client = vision.ImageAnnotatorClient()
 
+credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if credentials_path:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+    client = vision.ImageAnnotatorClient()
+else:
+    client = None
+
+
+def extract_text_from_image(image_path):
+    """
+    Извлича текст от изображение чрез Google Cloud Vision API.
+    """
+    if client is None:
+        return ""
 
 def extract_text_from_image(image_path):
     """
