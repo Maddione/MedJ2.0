@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-4">
   <div class="col-md-6 bg-light p-4 rounded" style="background-color: #fdfee9;">
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -27,12 +27,20 @@
   </div>
 </div>
 
+{% if extracted_text %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+      <h4 style="color:#0a4e75;">{% trans 'Извлечен текст (OCR):' %}</h4>
+      <pre style="background:#f0f0f0; padding:10px; border-radius:5px;">{{ extracted_text }}</pre>
+    </div>
+  </div>
+{% endif %}
+
 {% if json_output %}
   <div class="row justify-content-center mt-4">
     <div class="col-md-8">
       <h4 style="color:#0a4e75;">{% trans 'Обобщение' %}</h4>
       <p><strong>{% trans 'Дата:' %}</strong> {{ json_output.date }}</p>
-
       <h5 style="color:#0a4e75;">{% trans 'Таблица (OCR):' %}</h5>
       <table class="table table-bordered">
         <thead>
@@ -58,16 +66,24 @@
           {% endfor %}
         </tbody>
       </table>
+    </div>
+  </div>
+{% endif %}
 
-      {% if html_output %}
+{% if html_output %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
       <h5 style="color:#0a4e75;">{% trans 'Таблица (GPT):' %}</h5>
       <div>{{ html_output|safe }}</div>
-      {% endif %}
+    </div>
+  </div>
+{% endif %}
 
-      {% if summary %}
+{% if summary %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
       <h5 style="color:#0a4e75;">{% trans 'Текст:' %}</h5>
       <p>{{ summary }}</p>
-      {% endif %}
     </div>
   </div>
 {% endif %}
