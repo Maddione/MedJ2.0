@@ -11,6 +11,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('upload/', views.upload, name='upload'),
     path('upload/success/', views.upload_success, name='upload_success'),
+    path("i18n/", include("django.conf.urls.i18n")),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

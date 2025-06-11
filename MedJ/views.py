@@ -73,6 +73,10 @@ def dashboard(request):
 def upload(request):
     extracted_text = None
     extracted_fields = None
+
+    doc_kind = request.POST.get("doc_kind")
+    file_type = request.POST.get("file_type")
+
     if request.method == "POST" and request.FILES.get("document"):
         file = request.FILES["document"]
 
@@ -87,7 +91,12 @@ def upload(request):
 
         os.remove(temp_path)
 
-    return render(request, "upload.html", {"extracted_text": extracted_text, "extracted_fields": extracted_fields})
+    return render(request, "upload.html", {
+        "extracted_text": extracted_text,
+        "extracted_fields": extracted_fields,
+        "doc_kind": doc_kind,
+        "file_type": file_type,
+    })
 
 @login_required
 def upload_success(request):
