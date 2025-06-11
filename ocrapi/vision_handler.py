@@ -5,11 +5,10 @@ from google.cloud import vision
 from dotenv import load_dotenv
 from google.oauth2 import service_account
 
+# Зареждаме ключа от .env
 load_dotenv()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-client = vision.ImageAnnotatorClient()
-
+# credentials path may be undefined in development
 credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 if credentials_path:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
@@ -24,11 +23,6 @@ def extract_text_from_image(image_path):
     """
     if client is None:
         return ""
-
-def extract_text_from_image(image_path):
-    """
-    Извлича текст от изображение чрез Google Cloud Vision API.
-    """
     with io.open(image_path, 'rb') as image_file:
         content = image_file.read()
 
@@ -54,6 +48,3 @@ def extract_medical_fields_from_text(text):
     results = {}
     for key, pattern in fields.items():
         match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            results[key] = match.group(1)
-    return results
