@@ -1,12 +1,12 @@
-/* 1. ДЕФИНИЦИЯ НА ЦВЕТОВЕТЕ (ТОВА ЛИПСВАШЕ) */
+/* 1. ДЕФИНИЦИЯ НА ЦВЕТОВЕТЕ */
 :root {
-    --bg-site: #EAEBDA;          /* background of site */
-    --bg-content: #FDFEE9;       /* blocks, text, icons */
-    --primary-action: #43B8CF;   /* buttons, navbar, links */
-    --navbar-bg: #0A4E75;        /* buttons on nav bar */
-    --checkmark-green: #15BC11;  /* checkmarks */
-    --danger-red: #D84137;       /* вероятно за грешки или изтриване */
-    --text-color: #333;          /* Основен цвят на текста */
+    --bg-site: #EAEBDA;          /* Основен background на сайта (кремаво) */
+    --bg-content: #FDFEE9;       /* Blocks, text, icons (почти бяло) */
+    --primary-action: #43B8CF;   /* Светлосин */
+    --navbar-bg: #0A4E75;        /* Тъмно син */
+    --checkmark-green: #15BC11;
+    --danger-red: #D84137;
+    --text-color: #333;
 }
 
 /* 2. ГЛОБАЛНИ СТИЛОВЕ */
@@ -14,48 +14,98 @@ body {
     background-color: var(--bg-site);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-/* 3. СТИЛОВЕ ЗА НАВИГАЦИЯТА (както ги искахте) */
+/* 3. СТИЛОВЕ ЗА НАВИГАЦИЯТА */
 .main-navbar {
-    background-color: var(--primary-action);
-    padding: 0.25rem 1.5rem;
+    background-color: var(--primary-action); /* Фон на цялата навигация: Светлосиньо */
+    padding: 0.5rem 1rem; /* Базов падинг за навигацията */
+    min-height: 46px;
+    position: relative;
+    z-index: 10;
+}
+
+.main-navbar .container-fluid {
+    width: 100%;
 }
 
 .main-navbar .navbar-brand img {
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.4));
+    width: 30px; /* Базов размер на иконата за език */
+    height: 30px;
+    object-fit: contain;
 }
 
-.main-navbar .nav-link {
-    color: var(--bg-content);
+/* Стили за навигационните линкове (табове) */
+.main-navbar .navbar-nav .nav-item .nav-link.folder-tab {
+    background-color: var(--primary-action); /* Неактивни табове: Светлосиньо */
+    color: var(--bg-content); /* Неактивни табове текст: Кремаво */
     font-weight: bold;
-    padding: 0.75rem 1rem;
-    border-radius: 5px;
+    padding: 0.75rem 1rem; /* Базов падинг за видимост */
+    border-radius: 20px 20px 0 0; /* Заобляне на горните ъгли */
+    text-decoration: none;
+    white-space: nowrap;
+    display: flex; /* За да центрираме текста */
+    align-items: center;
+    justify-content: center;
+    height: 126%; /* Заема височината на родителя nav-item */
+    position: relative; /* За да може да се ползва z-index */
+    z-index: 1; /* Базов z-index */
 }
 
-.main-navbar .nav-link.active {
-    background-color: transparent;
-    color: var(--navbar-bg);
-    text-decoration: underline;
-    text-underline-offset: 6px;
-    text-decoration-thickness: 3px;
+/* Разреждане на табовете */
+.main-navbar .navbar-nav:first-of-type { /* UL елементът, който съдържа табовете */
+    justify-content: space-around !important; /* Разпределя табовете равномерно */
 }
-.main-navbar .nav-link:hover {
-    color: var(--navbar-bg);
+.main-navbar .navbar-nav .nav-item {
+    margin-right: 15px; /* Разстояние между табовете */
+}
+.main-navbar .navbar-nav .nav-item:last-child {
+    margin-right: 0; /* Последен елемент да няма десен марджин */
+}
+
+
+/* Ховър стил за табове */
+.main-navbar .navbar-nav .nav-item .nav-link.folder-tab:hover {
+    background-color: var(--bg-site); /* Фон при ховър: Почти бяло */
+    color: var(--navbar-bg); /* Текст при ховър: Тъмно синьо */
+    z-index: 2; /* Повдигане при ховър */
+}
+
+/* Активен таб стил */
+.main-navbar .navbar-nav .nav-item .nav-link.folder-tab.active {
+    background-color: var(--bg-site); /* Фон активен: Почти бяло */
+    color: var(--navbar-bg); /* Текст активен: Тъмно синьо */
+    text-decoration: underline; /* Подчертаване */
+    text-underline-offset:12px;
+    text-decoration-thickness: 4px;
+    text-decoration-color: var(--navbar-bg);
+    z-index: 3; /* Най-висок z-index за активния таб */
+}
+
+/* Стилизиране на потребителския дропдаун */
 .main-navbar .dropdown-toggle {
-    color: var(--bg-content);
+    color: var(--bg-site); /* Текст дропдаун: Кремаво */
     font-weight: bold;
+    font-size: 1.2em; /* Увеличен размер на шрифта */
+    padding: 0.75rem 0;
+    text-decoration: none;
+}
+.main-navbar .dropdown-toggle img {
+    width: 32px; /* Увеличен размер на иконата на потребителя */
+    height: 32px;
+    object-fit: contain;
+}
+.main-navbar .dropdown-toggle:hover {
+    color: var(--navbar-bg); /* Текст дропдаун ховър: Тъмно синьо */
 }
 
-.main-navbar .dropdown-menu {
-    color: var(--navbar-bg) ;
-    background-color: var(--bg-content);
-    border: 1px solid var(--navbar-bg);
-}
 
 /* 4. СТИЛОВЕ ЗА КОНТЕЙНЕРА НА СЪДЪРЖАНИЕТО */
 .content-wrapper {
-    background-color: var(--bg-content);
+    background-color: var(--bg-site); /* Фон на съдържанието: Кремаво */
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 8px;

@@ -47,6 +47,7 @@ class MedicalEvent(models.Model):
     def __str__(self):
         return f"{self.title} на {self.date.strftime('%d.%m.%Y')}"
 
+
 # Качен файл – изображение или PDF
 class MedicalDocument(models.Model):
     event = models.ForeignKey(MedicalEvent, on_delete=models.CASCADE, related_name='documents')
@@ -55,6 +56,15 @@ class MedicalDocument(models.Model):
     extracted_text = models.TextField(blank=True)
     summary = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+
+    # --- НОВО ПОЛЕ ЗА ЗАСИЧАНЕ НА ДУБЛИКАТИ ---
+    file_hash = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="SHA-256 hash of the file content"
+    )
 
     def __str__(self):
         return f"Документ за {self.event.title}"
