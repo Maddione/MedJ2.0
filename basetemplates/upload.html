@@ -1,99 +1,53 @@
 {% extends "base_app.html" %}
 {% load i18n %}
-{% block content %}
+{% load static %} {# <-- Уверете се, че static е зареден #}
 
+{% block content %}
 <div class="row justify-content-center mt-4">
   <div class="col-md-6 bg-light p-4 rounded">
-    <form method="post" enctype="multipart/form-data">
+    <h4 class="mb-3 text-center">{% trans 'Качване на документ' %}</h4>
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="file" id="file_input" name="document" accept="image/*,application/pdf" class="form-control mb-3">
-      <select id="doc_kind" name="doc_kind" class="form-select mb-3">
-        <option value="">{% trans 'Изберете вид документ' %}</option>
-        <option value="blood">{% trans 'кръвни изследвания' %}</option>
-        <option value="outpatient">{% trans 'амбулаторен лист' %}</option>
-        <option value="epicrisis">{% trans 'епикриза' %}</option>
-        <option value="referral">{% trans 'направление' %}</option>
-        <option value="prescription">{% trans 'рецепта' %}</option>
-      </select>
-      <select id="file_type" name="file_type" class="form-select mb-3">
-        <option value="">{% trans 'Изберете тип файл' %}</option>
-        <option value="image">{% trans 'изображение' %}</option>
-        <option value="pdf">PDF</option>
-      </select>
-      <button id="upload-button" type="submit" class="btn w-100" disabled>
-        {% trans 'Качи' %}
+      <div class="mb-3">
+        <label for="file_input" class="form-label">{% trans '1. Изберете файл (Изображение или PDF):' %}</label>
+        <input type="file" id="file_input" name="document" accept="image/*,application/pdf" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="doc_kind" class="form-label">{% trans '2. Посочете вид на документа:' %}</label>
+        <select id="doc_kind" name="doc_kind" class="form-select">
+          <option value="" selected disabled>{% trans 'Моля, изберете...' %}</option>
+          <option value="blood">{% trans 'кръвни изследвания' %}</option>
+          <option value="outpatient">{% trans 'амбулаторен лист' %}</option>
+          <option value="epicrisis">{% trans 'епикриза' %}</option>
+          <option value="referral">{% trans 'направление' %}</option>
+          <option value="prescription">{% trans 'рецепта' %}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="file_type" class="form-label">{% trans '3. Посочете тип на файла:' %}</label>
+        <select id="file_type" name="file_type" class="form-select">
+          <option value="" selected disabled>{% trans 'Моля, изберете...' %}</option>
+          <option value="image">{% trans 'изображение' %}</option>
+          <option value="pdf">PDF</option>
+        </select>
+      </div>
+      <button id="upload-button" type="submit" class="btn btn-primary w-100 mt-2" disabled>
+        {% trans 'Качи и анализирай' %}
       </button>
     </form>
   </div>
 </div>
 
-{% if extracted_text is not None %}
-  <div class="row justify-content-center mt-4">
+<div id="results-section" class="row justify-content-center mt-4" style="display: none;">
     <div class="col-md-8">
-      <h4>{% trans 'Извлечен текст (OCR):' %}</h4>
-      <pre>{{ extracted_text }}</pre>
+        <h3 class="text-center">{% trans 'Резултати от анализа' %}</h3>
+        <hr>
+        <div id="result-summary" class="alert alert-info"></div>
+        <div id="result-html-table"></div>
     </div>
-  </div>
-{% endif %}
+</div>
 
-{% if json_output is not None %}
-  <div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-      <h4>{% trans 'Обобщение' %}</h4>
-      <p><strong>{% trans 'Дата:' %}</strong> {{ json_output.date }}</p>
 
-      <h5>{% trans 'Таблица (OCR):' %}</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>{% trans 'Показател' %}</th>
-            <th>{% trans 'Стойност' %}</th>
-            <th>{% trans 'Ед.' %}</th>
-            <th>{% trans 'Статус' %}</th>
-            <th>{% trans 'Реф. граници' %}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for name, info in json_output.items %}
-            {% if name != 'date' %}
-            <tr>
-              <td>{{ name }}</td>
-              <td>{{ info.value }}</td>
-              <td>{{ info.unit }}</td>
-              <td>{{ info.status }}</td>
-              <td>{{ info.reference }}</td>
-            </tr>
-            {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
-
-      {% if html_output %}
-      <h5>{% trans 'Таблица (GPT):' %}</h5>
-      <div>{{ html_output|safe }}</div>
-      {% endif %}
-
-      {% if summary %}
-      <h5>{% trans 'Текст:' %}</h5>
-      <p>{{ summary }}</p>
-      {% endif %}
-    </div>
-  </div>
-{% endif %}
-
-<script>
-  const docKind = document.getElementById('doc_kind');
-  const fileType = document.getElementById('file_type');
-  const fileInput = document.getElementById('file_input');
-  const uploadButton = document.getElementById('upload-button');
-
-  function checkSelection() {
-    uploadButton.disabled = !(docKind.value && fileType.value && fileInput.files.length);
-  }
-
-  docKind.addEventListener('change', checkSelection);
-  fileType.addEventListener('change', checkSelection);
-  fileInput.addEventListener('change', checkSelection);
-</script>
+<script src="{% static 'js/upload_logic.js' %}" defer></script>
 
 {% endblock %}

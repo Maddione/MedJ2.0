@@ -1,15 +1,19 @@
+# views.py
+
 import os
-import io
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
-from ocrapi.vision_handler import extract_text_from_image
-from .utils.parse_lab import parse_lab_report
+from django.core.files.storage import default_storage
+from django.utils.translation import gettext as _
+from ocrapi.vision_handler import extract_text_from_image, extract_medical_fields_from_text
+from ocrapi.gpt_client import call_gpt_for_document
 from .forms import CustomUserCreationForm
 
 
+# --- Публични изгледи (без промяна) ---
 def landing_page(request):
     return render(request, 'landingpage.html')
 
@@ -23,7 +27,6 @@ def login_view(request):
             return redirect('medj:dashboard')
     else:
         form = AuthenticationForm()
-
     return render(request, 'registration/login.html', {'form': form})
 
 
@@ -43,6 +46,8 @@ def logout_view(request):
     return redirect('medj:landingpage')
 
 
+# --- Изгледи за логнати потребители ---
+
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
@@ -50,20 +55,63 @@ def dashboard(request):
 
 @login_required
 def upload(request):
-    json_output = None
-    html_output = None
-    if request.method == 'POST' and request.FILES.get('document'):
-        file = request.FILES['document']
-        temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
-        os.makedirs(temp_dir, exist_ok=True)
-        temp_path = os.path.join(temp_dir, file.name)
-        with open(temp_path, 'wb+') as dest:
-            for chunk in file.chunks():
-                dest.write(chunk)
-        # raw_text = extract_text_from_image(temp_path)
-        os.remove(temp_path)
-        # json_output, html_output = parse_lab_report(raw_text)
-    return render(request, 'upload.html', {'json_output': json_output, 'html_output': html_output})
+    """
+    Основна функция за качване и обработка на документи.
+    - При GET заявка: показва празната форма.
+    - При POST заявка (от AJAX): обработва файла и връща JSON.
+    """
+    # Сценарий 1: Потребителят отваря страницата, показваме HTML
+    if request.method == 'GET':
+        return render(request, 'upload.html')
+
+    # Сценарий 2: Потребителят изпраща файл, обработваме и връщаме JSON
+    if request.method == 'POST':
+        temp_file_path = None
+        try:
+            uploaded_file = request.FILES.get('document')
+            doc_kind = request.POST.get('doc_kind')
+
+            if not uploaded_file or not doc_kind:
+                return JsonResponse({'status': 'error', 'message': _('Моля, изберете файл и вид документ.')},
+                                    status=400)
+
+            # 1. Запазваме файла временно, за да получим пътя до него
+            file_name = default_storage.save(f"temp/{uploaded_file.name}", uploaded_file)
+            temp_file_path = default_storage.path(file_name)
+
+            # 2. Извикваме OCR функцията от vision_handler.py
+            raw_text = extract_text_from_image(temp_file_path)
+            if not raw_text:
+                raise ValueError(_('Не беше разчетен текст от документа.'))
+
+            # 3. Извикваме Regex функцията (по желание, за fallback)
+            extracted_fields = extract_medical_fields_from_text(raw_text)
+
+            # 4. Извикваме GPT функцията от gpt_client.py
+            gpt_result = call_gpt_for_document(raw_text, doc_kind, extracted_fields)
+
+            # 5. (По желание) Запазваме резултата в базата данни
+            # Document.objects.create(...)
+
+            # 6. Връщаме успешен JSON отговор към JavaScript
+            return JsonResponse({
+                'status': 'success',
+                'summary': gpt_result.get("summary", _("Няма налично обобщение.")),
+                'html_table': gpt_result.get("html_table", "")
+            })
+
+        except Exception as e:
+            # Прихваща всяка грешка и я връща като JSON
+            print(f"ERROR in upload view: {e}")
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+        finally:
+            # 7. Винаги изтриваме временния файл накрая
+            if temp_file_path and default_storage.exists(temp_file_path):
+                default_storage.delete(temp_file_path)
+
+    # Ако заявката не е нито GET, нито POST
+    return JsonResponse({'status': 'error', 'message': 'Невалиден метод'}, status=405)
 
 
 @login_required

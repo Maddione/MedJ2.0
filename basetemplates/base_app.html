@@ -24,22 +24,22 @@
             <div class="collapse navbar-collapse" id="mainNavbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.view_name == 'medj:dashboard' %}active{% endif %}" href="{% url 'medj:dashboard' %}">ТАБЛО</a>
+                        <a class="nav-link folder-tab {% if request.resolver_match.view_name == 'medj:dashboard' %}active{% endif %}" href="{% url 'medj:dashboard' %}"><span>ТАБЛО</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.view_name == 'medj:casefiles' %}active{% endif %}" href="{% url 'medj:casefiles' %}">ДОСИЕ</a>
+                        <a class="nav-link folder-tab {% if request.resolver_match.view_name == 'medj:casefiles' %}active{% endif %}" href="{% url 'medj:casefiles' %}"><span>ДОСИЕ</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.view_name == 'medj:personalcard' %}active{% endif %}" href="{% url 'medj:personalcard' %}">Л.КАРТОН</a>
+                        <a class="nav-link folder-tab {% if request.resolver_match.view_name == 'medj:personalcard' %}active{% endif %}" href="{% url 'medj:personalcard' %}"><span>Л.КАРТОН</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.view_name == 'medj:upload' %}active{% endif %}" href="{% url 'medj:upload' %}">ДОКУМЕНТИ</a>
+                        <a class="nav-link folder-tab {% if request.resolver_match.view_name == 'medj:upload' %}active{% endif %}" href="{% url 'medj:upload' %}"><span>ДОКУМЕНТИ</span></a>
                     </li>
                 </ul>
 
                 <div class="navbar-nav">
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ user.username }}
                             <img src="{% static 'images/profileicon.png' %}" alt="Профил" width="24" class="ms-2">
                         </a>
