@@ -17,8 +17,8 @@ class MedicalDocumentForm(forms.ModelForm):
         fields = ['event', 'file', 'tags']
         widgets = {
             'tags': forms.CheckboxSelectMultiple(),
-
         }
+
 class OCRUploadForm(forms.Form):
     file = forms.FileField(label="Качи изображение или PDF")
 
@@ -30,16 +30,28 @@ class UploadForm(forms.Form):
             ("рецепта", _("Рецепта")),
         ],
         required=True,
-        label=_("Вид документ")
+        label=_("Вид документ"),
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'id': 'id_doc_kind'
+        })
     )
-
     file_type = forms.ChoiceField(
         choices=[
             ("image", _("Изображение")),
             ("pdf", _("PDF"))
         ],
         required=True,
-        label=_("Тип файл")
+        label=_("Тип файл"),
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'id': 'id_file_type'
+        })
     )
-
-    file = forms.FileField(label=_("Файл"))
+    file = forms.FileField(
+        label=_("Файл"),
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'id': 'id_file'
+        })
+    )
