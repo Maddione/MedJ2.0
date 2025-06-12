@@ -1,18 +1,16 @@
+from django.urls import path
 from . import views
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path, include
-
 
 urlpatterns = [
     path('', views.landing_page, name='landingpage'),
     path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('dashboard/', views.dashboard, name='dashboard'),
     path('register/', views.register, name='register'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('casefiles/', views.casefiles, name='casefiles'),
+    path('personalcard/', views.personalcard, name='personalcard'),
     path('upload/', views.upload, name='upload'),
-    path("i18n/", include("django.conf.urls.i18n")),
-
+    path('history/', views.history, name='history'),
+    path('profile/', views.profile, name='profile'),
+    path('doctors/', views.doctors, name='doctors'),
+    path('logout/', views.logout_view, name='logout'),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
