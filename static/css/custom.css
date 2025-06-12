@@ -1,0 +1,80 @@
+/* 1. ДЕФИНИЦИЯ НА ЦВЕТОВЕТЕ (ТОВА ЛИПСВАШЕ) */
+:root {
+    --bg-site: #EAEBDA;          /* background of site */
+    --bg-content: #FDFEE9;       /* blocks, text, icons */
+    --primary-action: #43B8CF;   /* buttons, navbar, links */
+    --navbar-bg: #0A4E75;        /* buttons on nav bar */
+    --checkmark-green: #15BC11;  /* checkmarks */
+    --danger-red: #D84137;       /* вероятно за грешки или изтриване */
+    --text-color: #333;          /* Основен цвят на текста */
+}
+
+/* 2. ГЛОБАЛНИ СТИЛОВЕ */
+body {
+    background-color: var(--bg-site);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+}
+
+/* 3. СТИЛОВЕ ЗА НАВИГАЦИЯТА (както ги искахте) */
+.main-navbar {
+    background-color: var(--primary-action);
+    padding: 0.25rem 1.5rem;
+}
+
+.main-navbar .navbar-brand img {
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.4));
+}
+
+.main-navbar .nav-link {
+    color: var(--bg-content);
+    font-weight: bold;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+}
+
+.main-navbar .nav-link.active {
+    background-color: transparent;
+    color: var(--navbar-bg);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 3px;
+}
+.main-navbar .nav-link:hover {
+    color: var(--navbar-bg);
+.main-navbar .dropdown-toggle {
+    color: var(--bg-content);
+    font-weight: bold;
+}
+
+.main-navbar .dropdown-menu {
+    color: var(--navbar-bg) ;
+    background-color: var(--bg-content);
+    border: 1px solid var(--navbar-bg);
+}
+
+/* 4. СТИЛОВЕ ЗА КОНТЕЙНЕРА НА СЪДЪРЖАНИЕТО */
+.content-wrapper {
+    background-color: var(--bg-content);
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+/* 5. СТИЛОВЕ ЗА БУТОНИТЕ */
+.btn-primary-custom {
+    background-color: var(--primary-action);
+    border-color: var(--primary-action);
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-primary-custom:hover {
+    background-color: #3aa6b9;
+    border-color: #3aa6b9;
+    color: #fff;
+}

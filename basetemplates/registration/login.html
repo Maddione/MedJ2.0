@@ -1,20 +1,55 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% block title %}{% trans 'Вход' %} • MedJ{% endblock %}
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}Вход в MedJ{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-  <div class="p-5 rounded" style="background-color: #fdfee9; box-shadow: 0 0 15px rgba(0,0,0,0.1); max-width: 450px; width: 100%;">
-    <div class="text-center mb-4 rounded" style="background-color: #43b8cf; padding: 1rem;">
-       <h2 class="text-white m-0">{% trans 'Добре дошли' %}</h2>
+<style>
+    /* Добавяме малко стилове, за да центрираме формата точно като на мокъпа ви */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh; /* Заема височина, за да може да се центрира вертикално */
+    }
+    .form-card {
+        background-color: var(--bg-content);
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+    .form-card .form-control {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .form-card .btn {
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-card text-center">
+        <h2 class="mb-4">Добре дошли</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    Моля, въведете правилно потребителско име и парола.
+                </div>
+            {% endif %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary-custom w-100 mt-3">Вход</button>
+        </form>
+        <p class="mt-3">
+            Нямате акаунт? <a href="{% url 'medj:register' %}">Регистрирайте се</a>
+        </p>
     </div>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn w-100 text-white fw-bold" style="background-color: #43b8cf;">{% trans 'Вход' %}</button>
-    </form>
-    <p class="text-center mt-3">
-       {% trans 'Нямаш акаунт?' %} <a href="{% url 'register' %}" style="color: #0a4e75;">{% trans 'Регистрирай се' %}</a>
-    </p>
-  </div>
 </div>
 {% endblock %}

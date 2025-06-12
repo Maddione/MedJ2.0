@@ -1,27 +1,49 @@
-{% extends 'base.html' %}
-{% load i18n %}
-{% block content %}
-  <div class="container mt-5">
-     <h2 class="text-center mb-4">{% trans 'Регистрация' %}</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">{% trans 'Регистрация' %}</button>
-    </form>
-  </div>
-{% endblock %}
+{% extends 'base_public.html' %}
+{% load static %}
 
-{% if form.errors %}
-  <div style="color:red;">
-    <ul>
-      {% for field in form %}
-        {% for error in field.errors %}
-          <li>{{ field.label }}: {{ error }}</li>
-        {% endfor %}
-      {% endfor %}
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-{% endif %}
+{% block title %}Регистрация в MedJ{% endblock %}
+
+{% block content %}
+<style>
+    /* Използваме същите стилове като за логин формата */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+    }
+    .form-card {
+        background-color: var(--bg-content);
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+    .form-card .form-control {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .form-card .btn {
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-card text-center">
+        <h2 class="mb-4">Създаване на акаунт</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary-custom w-100 mt-3">Регистрация</button>
+        </form>
+        <p class="mt-3">
+            Вече имате акаунт? <a href="{% url 'medj:login' %}">Влезте от тук</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
