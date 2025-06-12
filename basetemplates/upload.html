@@ -3,11 +3,11 @@
 {% block content %}
 
 <div class="row justify-content-center mt-4">
-  <div class="col-md-6 bg-light p-4 rounded" style="background-color: #fdfee9;">
+  <div class="col-md-6 bg-light p-4 rounded">
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="file" name="document" accept="image/*,application/pdf" class="form-control mb-3" required>
-      <select name="doc_kind" class="form-select mb-3">
+      <input type="file" id="file_input" name="document" accept="image/*,application/pdf" class="form-control mb-3">
+      <select id="doc_kind" name="doc_kind" class="form-select mb-3">
         <option value="">{% trans 'Изберете вид документ' %}</option>
         <option value="blood">{% trans 'кръвни изследвания' %}</option>
         <option value="outpatient">{% trans 'амбулаторен лист' %}</option>
@@ -15,33 +15,34 @@
         <option value="referral">{% trans 'направление' %}</option>
         <option value="prescription">{% trans 'рецепта' %}</option>
       </select>
-      <select name="file_type" class="form-select mb-3">
+      <select id="file_type" name="file_type" class="form-select mb-3">
         <option value="">{% trans 'Изберете тип файл' %}</option>
         <option value="image">{% trans 'изображение' %}</option>
         <option value="pdf">PDF</option>
       </select>
-      <button type="submit" class="btn w-100" style="background-color: #43b8cf; color: white;">
+      <button id="upload-button" type="submit" class="btn w-100" disabled>
         {% trans 'Качи' %}
       </button>
     </form>
   </div>
 </div>
 
-{% if extracted_text %}
+{% if extracted_text is not None %}
   <div class="row justify-content-center mt-4">
     <div class="col-md-8">
-      <h4 style="color:#0a4e75;">{% trans 'Извлечен текст (OCR):' %}</h4>
-      <pre style="background:#f0f0f0; padding:10px; border-radius:5px;">{{ extracted_text }}</pre>
+      <h4>{% trans 'Извлечен текст (OCR):' %}</h4>
+      <pre>{{ extracted_text }}</pre>
     </div>
   </div>
 {% endif %}
 
-{% if json_output %}
+{% if json_output is not None %}
   <div class="row justify-content-center mt-4">
     <div class="col-md-8">
-      <h4 style="color:#0a4e75;">{% trans 'Обобщение' %}</h4>
+      <h4>{% trans 'Обобщение' %}</h4>
       <p><strong>{% trans 'Дата:' %}</strong> {{ json_output.date }}</p>
-      <h5 style="color:#0a4e75;">{% trans 'Таблица (OCR):' %}</h5>
+
+      <h5>{% trans 'Таблица (OCR):' %}</h5>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -66,26 +67,33 @@
           {% endfor %}
         </tbody>
       </table>
-    </div>
-  </div>
-{% endif %}
 
-{% if html_output %}
-  <div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-      <h5 style="color:#0a4e75;">{% trans 'Таблица (GPT):' %}</h5>
+      {% if html_output %}
+      <h5>{% trans 'Таблица (GPT):' %}</h5>
       <div>{{ html_output|safe }}</div>
+      {% endif %}
+
+      {% if summary %}
+      <h5>{% trans 'Текст:' %}</h5>
+      <p>{{ summary }}</p>
+      {% endif %}
     </div>
   </div>
 {% endif %}
 
-{% if summary %}
-  <div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-      <h5 style="color:#0a4e75;">{% trans 'Текст:' %}</h5>
-      <p>{{ summary }}</p>
-    </div>
-  </div>
-{% endif %}
+<script>
+  const docKind = document.getElementById('doc_kind');
+  const fileType = document.getElementById('file_type');
+  const fileInput = document.getElementById('file_input');
+  const uploadButton = document.getElementById('upload-button');
+
+  function checkSelection() {
+    uploadButton.disabled = !(docKind.value && fileType.value && fileInput.files.length);
+  }
+
+  docKind.addEventListener('change', checkSelection);
+  fileType.addEventListener('change', checkSelection);
+  fileInput.addEventListener('change', checkSelection);
+</script>
 
 {% endblock %}
