@@ -7,3 +7,5 @@ media/
 .env
 *.json
 TODO.txt
+node_modules/
+
