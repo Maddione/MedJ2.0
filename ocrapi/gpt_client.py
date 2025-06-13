@@ -3,9 +3,9 @@ import openai
 from django.conf import settings
 import re
 from django.utils.translation import gettext as _
+from openai import api_key
 
 openai.api_key = settings.OPENAI_API_KEY
-
 
 def call_gpt_for_document(raw_text: str, doc_kind: str, extracted_fields: dict) -> dict:
     """

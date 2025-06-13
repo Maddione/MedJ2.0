@@ -1,130 +1,135 @@
-/* 1. ДЕФИНИЦИЯ НА ЦВЕТОВЕТЕ */
+@import "tailwindcss";
+
+/* ==========================================================================
+   1. ГЛОБАЛНИ СТИЛОВЕ И ПРОМЕНЛИВИ
+   ========================================================================== */
 :root {
-    --bg-site: #EAEBDA;          /* Основен background на сайта (кремаво) */
-    --bg-content: #FDFEE9;       /* Blocks, text, icons (почти бяло) */
-    --primary-action: #43B8CF;   /* Светлосин */
-    --navbar-bg: #0A4E75;        /* Тъмно син */
-    --checkmark-green: #15BC11;
-    --danger-red: #D84137;
-    --text-color: #333;
+    --bg-site: #EAEBDA;
+    --bg-content: #FDFEE9;
+    --primary-color: #43B8CF; /* Преименувано от --primary-action */
+    --primary-text-color: #0A4E75;
+    --light-text-color: #FDFEE9;
 }
 
-/* 2. ГЛОБАЛНИ СТИЛОВЕ */
 body {
     background-color: var(--bg-site);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-color);
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* ==========================================================================
+   2. СТИЛОВЕ ЗА НАВИГАЦИЯТА (HEADER)
+   ========================================================================== */
+header > nav.main-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Подравнява табовете по долния ръб */
+    background-color: var(--primary-color);
+    padding: 0 1.5rem;
+    padding-top: 0.5rem;
+    border-radius: 8px;
+}
+
+.main-navbar .navbar-brand {
+    margin-bottom: 0.5rem;
+}
+
+.main-navbar .main-nav-tabs {
+    display: flex;
+    list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    flex-grow: 1; /* Позволява на табовете да заемат място */
+    margin-left: 2rem;
 }
 
-/* 3. СТИЛОВЕ ЗА НАВИГАЦИЯТА */
-.main-navbar {
-    background-color: var(--primary-action); /* Фон на цялата навигация: Светлосиньо */
-    padding: 0.5rem 1rem; /* Базов падинг за навигацията */
-    min-height: 46px;
-    position: relative;
-    z-index: 10;
+.main-navbar .main-nav-tabs li {
+    margin-right: 2px;
 }
 
-.main-navbar .container-fluid {
-    width: 100%;
-}
-
-.main-navbar .navbar-brand img {
-    width: 30px; /* Базов размер на иконата за език */
-    height: 30px;
-    object-fit: contain;
-}
-
-/* Стили за навигационните линкове (табове) */
-.main-navbar .navbar-nav .nav-item .nav-link.folder-tab {
-    background-color: var(--primary-action); /* Неактивни табове: Светлосиньо */
-    color: var(--bg-content); /* Неактивни табове текст: Кремаво */
-    font-weight: bold;
-    padding: 0.75rem 1rem; /* Базов падинг за видимост */
-    border-radius: 20px 20px 0 0; /* Заобляне на горните ъгли */
+.main-navbar .folder-tab {
+    padding: 0.75rem 1.5rem;
+    color: var(--light-text-color);
+    background-color: var(--primary-color);
+    border-radius: 8px 8px 0 0;
     text-decoration: none;
-    white-space: nowrap;
-    display: flex; /* За да центрираме текста */
-    align-items: center;
-    justify-content: center;
-    height: 126%; /* Заема височината на родителя nav-item */
-    position: relative; /* За да може да се ползва z-index */
-    z-index: 1; /* Базов z-index */
-}
-
-/* Разреждане на табовете */
-.main-navbar .navbar-nav:first-of-type { /* UL елементът, който съдържа табовете */
-    justify-content: space-around !important; /* Разпределя табовете равномерно */
-}
-.main-navbar .navbar-nav .nav-item {
-    margin-right: 15px; /* Разстояние между табовете */
-}
-.main-navbar .navbar-nav .nav-item:last-child {
-    margin-right: 0; /* Последен елемент да няма десен марджин */
-}
-
-
-/* Ховър стил за табове */
-.main-navbar .navbar-nav .nav-item .nav-link.folder-tab:hover {
-    background-color: var(--bg-site); /* Фон при ховър: Почти бяло */
-    color: var(--navbar-bg); /* Текст при ховър: Тъмно синьо */
-    z-index: 2; /* Повдигане при ховър */
-}
-
-/* Активен таб стил */
-.main-navbar .navbar-nav .nav-item .nav-link.folder-tab.active {
-    background-color: var(--bg-site); /* Фон активен: Почти бяло */
-    color: var(--navbar-bg); /* Текст активен: Тъмно синьо */
-    text-decoration: underline; /* Подчертаване */
-    text-underline-offset:12px;
-    text-decoration-thickness: 4px;
-    text-decoration-color: var(--navbar-bg);
-    z-index: 3; /* Най-висок z-index за активния таб */
-}
-
-/* Стилизиране на потребителския дропдаун */
-.main-navbar .dropdown-toggle {
-    color: var(--bg-site); /* Текст дропдаун: Кремаво */
     font-weight: bold;
-    font-size: 1.2em; /* Увеличен размер на шрифта */
-    padding: 0.75rem 0;
-    text-decoration: none;
+    display: block;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: all 0.2s ease-in-out;
 }
-.main-navbar .dropdown-toggle img {
-    width: 32px; /* Увеличен размер на иконата на потребителя */
-    height: 32px;
-    object-fit: contain;
+
+.main-navbar .folder-tab:hover {
+    background-color: var(--bg-content);
+    color: var(--primary-text-color);
+    transform: translateY(-3px);
 }
-.main-navbar .dropdown-toggle:hover {
-    color: var(--navbar-bg); /* Текст дропдаун ховър: Тъмно синьо */
+
+.main-navbar .folder-tab.active {
+    background-color: var(--bg-site);
+    color: var(--primary-text-color);
+    z-index: 2;
+    border-color: #d1d1d1;
+    border-bottom: 1px solid var(--bg-site);
+}
+
+.main-navbar .user-menu .dropdown summary {
+    border: none;
+    background: transparent;
+    color: var(--light-text-color);
+    font-weight: bold;
+}
+.main-navbar .user-menu .dropdown summary:hover {
+    color: white;
+}
+.main-navbar .user-menu .dropdown ul {
+    background-color: var(--bg-content);
 }
 
 
-/* 4. СТИЛОВЕ ЗА КОНТЕЙНЕРА НА СЪДЪРЖАНИЕТО */
-.content-wrapper {
-    background-color: var(--bg-site); /* Фон на съдържанието: Кремаво */
-    margin: 2rem auto;
+/* ==========================================================================
+   3. СТИЛОВЕ ЗА ОСНОВНОТО СЪДЪРЖАНИЕ
+   ========================================================================== */
+main.content-wrapper {
+    background-color: var(--bg-site);
     padding: 2rem;
-    border-radius: 8px;
-    max-width: 1200px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border: 1px solid #d1d1d1;
+    border-top: none;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    position: relative;
+    top: -1px; /* Повдига се, за да се слее с активния таб */
+    z-index: 1;
 }
 
-/* 5. СТИЛОВЕ ЗА БУТОНИТЕ */
-.btn-primary-custom {
-    background-color: var(--primary-action);
-    border-color: var(--primary-action);
-    color: #fff;
+
+/* ==========================================================================
+   4. СТИЛОВЕ ЗА КОНКРЕТНИ СТРАНИЦИ
+   ========================================================================== */
+.page-upload .prescribed-by-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d4eef4;
+    padding: 1rem;
+    border-radius: 30px;
+    border: 1px solid #a3d9e6;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.page-upload .prescribed-by-text {
     font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 5px;
+    color: #0A4E75;
+    margin: 0 1rem;
+    white-space: nowrap;
+    text-transform: uppercase;
 }
 
-.btn-primary-custom:hover {
-    background-color: #3aa6b9;
-    border-color: #3aa6b9;
-    color: #fff;
+.page-upload .custom-select-in-container {
+    flex: 1;
+    min-width: 150px;
 }
