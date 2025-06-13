@@ -1,6 +1,6 @@
-.venv/
+*.venv/
 __pycache__/
-db.sqlite3
+*.sqlite3
 *.pyc
 *.log
 media/
@@ -8,4 +8,5 @@ media/
 *.json
 TODO.txt
 node_modules/
+medj-ocr-key.json
 
