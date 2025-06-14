@@ -1,9 +1,9 @@
-import os
 import io
+import os
 import re
-from google.cloud import vision
+
 from dotenv import load_dotenv
-from google.oauth2 import service_account
+from google.cloud import vision
 
 load_dotenv()
 
@@ -28,7 +28,7 @@ def extract_text_from_image(image_path):
 
     texts = response.text_annotations
     if texts:
-        return texts[0].description  # Първият е целият текст
+        return texts[0].description
     return ""
 
 

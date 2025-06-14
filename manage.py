@@ -9,7 +9,7 @@ def main() -> None:
     """Entrypoint for manage.py commands."""
     os.environ.setdefault(
         "DJANGO_SETTINGS_MODULE",
-        os.getenv("DJANGO_SETTINGS_MODULE", "settings"),
+        os.getenv("DJANGO_SETTINGS_MODULE", "settings.dev"),
     )
 
     try:
@@ -24,3 +24,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

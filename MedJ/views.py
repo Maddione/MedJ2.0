@@ -211,9 +211,9 @@ def personalcard(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    return render(request, 'subpages/profile.html')
 
 
 @login_required
 def doctors(request):
-    return render(request, 'doctors.html')
+    return render(request, 'subpages/doctors.html')

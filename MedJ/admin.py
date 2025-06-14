@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import (
     Tag,
     Doctor,
@@ -10,20 +11,24 @@ from .models import (
     Prescription
 )
 
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ['name']
+
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
     list_display = ['name', 'specialty', 'phone']
     search_fields = ['name', 'specialty']
 
+
 @admin.register(PatientProfile)
 class PatientProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'age', 'gender', 'blood_group', 'personal_doctor']
     search_fields = ['user__username', 'blood_group']
+
 
 @admin.register(MedicalEvent)
 class MedicalEventAdmin(admin.ModelAdmin):
@@ -31,11 +36,13 @@ class MedicalEventAdmin(admin.ModelAdmin):
     list_filter = ['category', 'date']
     search_fields = ['title', 'description']
 
+
 @admin.register(MedicalDocument)
 class MedicalDocumentAdmin(admin.ModelAdmin):
     list_display = ['event', 'uploaded_at']
     search_fields = ['extracted_text', 'summary']
     filter_horizontal = ['tags']
+
 
 @admin.register(BloodTestResult)
 class BloodTestResultAdmin(admin.ModelAdmin):
@@ -43,10 +50,12 @@ class BloodTestResultAdmin(admin.ModelAdmin):
     list_filter = ['measured_at']
     search_fields = ['parameter']
 
+
 @admin.register(UpcomingAppointment)
 class UpcomingAppointmentAdmin(admin.ModelAdmin):
     list_display = ['user', 'doctor', 'date']
     search_fields = ['doctor__name', 'user__username']
+
 
 @admin.register(Prescription)
 class PrescriptionAdmin(admin.ModelAdmin):

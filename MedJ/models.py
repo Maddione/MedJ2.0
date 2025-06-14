@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 
 # Общ таг – за категоризиране на събития, документи, лекари и др.
 class Tag(models.Model):
@@ -7,6 +8,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # Профил на пациента – разширение на User
 class PatientProfile(models.Model):
@@ -24,6 +26,7 @@ class PatientProfile(models.Model):
     def __str__(self):
         return f"Профил на {self.user.username}"
 
+
 # Лекар, без потребителски акаунт
 class Doctor(models.Model):
     name = models.CharField(max_length=100)
@@ -34,6 +37,7 @@ class Doctor(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.specialty})"
+
 
 # Медицинско събитие – преглед, ваксинация, изследване и др.
 class MedicalEvent(models.Model):
@@ -69,6 +73,7 @@ class MedicalDocument(models.Model):
     def __str__(self):
         return f"Документ за {self.event.title}"
 
+
 # Кръвна стойност от изследване
 class BloodTestResult(models.Model):
     document = models.ForeignKey(MedicalDocument, on_delete=models.CASCADE, related_name='blood_results')
@@ -81,6 +86,7 @@ class BloodTestResult(models.Model):
     def __str__(self):
         return f"{self.parameter} = {self.value} {self.unit}"
 
+
 # Предстоящо назначение (видимо в Табло)
 class UpcomingAppointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -90,6 +96,7 @@ class UpcomingAppointment(models.Model):
 
     def __str__(self):
         return f"Преглед при {self.doctor} на {self.date}"
+
 
 # Рецепта с лекарство и срок
 class Prescription(models.Model):
