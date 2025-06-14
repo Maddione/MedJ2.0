@@ -147,8 +147,8 @@ def analyze_document(request):
             title=f"Анализ на документ ({_(category)}) от {event_date.strftime('%d.%m.%Y')}",
         )
 
-        category_tag, created_cat = Tag.objects.get_or_create(name=category_name)
-        specialist_tag, created_spec = Tag.objects.get_or_create(name=specialist_tag_name)
+        category_tag, created_cat = Tag.objects.get_or_create(name=category)
+        specialist_tag, created_spec = Tag.objects.get_or_create(name=specialist)
 
         medical_event.category = category_tag
         medical_event.save()

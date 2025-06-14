@@ -1,17 +1,12 @@
 from __future__ import annotations
 import re
 import json
-import os
-import openai
 from django.conf import settings
 from openai import OpenAI
 from django.utils.translation import gettext as _
-from openai.types.chat import (
-    ChatCompletionSystemMessageParam,
-    ChatCompletionUserMessageParam,
-)
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
+
 
 def call_gpt_for_document(raw_text: str, doc_kind: str, extracted_fields: dict) -> dict:
     """
@@ -38,30 +33,34 @@ def call_gpt_for_document(raw_text: str, doc_kind: str, extracted_fields: dict) 
 
     try:
         resp = client.chat.completions.create(
-            model="gpt-4o",
-            temperature=0.7,
-            max_tokens=3500
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful medical assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.1,
+            max_tokens=3000,
         )
-        gpt_answer = response.choices[0].message.content
-
+        # Безопасно взимаме съдържанието
         content = resp.choices[0].message.content if resp.choices else ""
 
     except Exception as e:
+        # Прихващаме грешки от самия API извикване (напр. грешен ключ)
         print(f"OpenAI API call failed: {e}")
-        content = ""
+        content = ""  # Връщаме празно съдържание, за да продължи надолу
 
-    # ----  PRINT ЗА ДЕБЪГВАНЕ ----
+    # ---- ТУК ДОБАВЯМЕ PRINT ЗА ДЕБЪГВАНЕ ----
     print("----------- СУРОВ ОТГОВОР ОТ GPT -----------")
     print(content)
     print("------------------------------------------")
     # ---------------------------------------------
 
-    # --- ПАРСВАНЕ с REGEX ---
+    # --- НОВА, ПО-СИГУРНА ЛОГИКА ЗА ПАРСВАНЕ с REGEX ---
     json_match = re.search(r"===JSON===(.*?)===HTML===", content, re.DOTALL)
     html_match = re.search(r"===HTML===(.*?)===SUMMARY===", content, re.DOTALL)
     summary_match = re.search(r"===SUMMARY===(.*)", content, re.DOTALL)
 
-
+    # Безопасно извличаме частите. Ако не се намери съвпадение, връщаме празна стойност.
     json_part = json_match.group(1).strip() if json_match else "{}"
     html_part = html_match.group(1).strip() if html_match else ""
     summary_part = summary_match.group(1).strip() if summary_match else _("Не може да се генерира обобщение.")
@@ -69,6 +68,7 @@ def call_gpt_for_document(raw_text: str, doc_kind: str, extracted_fields: dict) 
     try:
         json_data = json.loads(json_part)
     except json.JSONDecodeError:
+        # Ако GPT върне невалиден JSON, използваме това като резервен вариант
         json_data = extracted_fields
         html_part = f"<p>{_('GPT върна невалиден формат на данните.')}</p>"
 
